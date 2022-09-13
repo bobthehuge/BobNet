@@ -29,12 +29,12 @@ namespace BNN
             return Matrix.Sigmoid(X * W + b);
         }
         
-        public static Tuple<Matrix, Matrix> gradients(Matrix m, Matrix inp, Matrix exp)
+        public static Tuple<Matrix, Matrix> gradients(Matrix A, Matrix inp, Matrix exp)
         {
-            var n = 1d / exp.cols;
-            var dW = Matrix.Transpose(inp) * (m - exp) * n;
+            var n = 1 / exp.rows;
+            var dW = Matrix.Transpose(inp) * (A - exp) * n;
 
-            var db = Matrix.Sum(m - exp) * n;
+            var db = Matrix.Sum(A - exp) * n;
 
             return new Tuple<Matrix, Matrix>(dW, db);
         }

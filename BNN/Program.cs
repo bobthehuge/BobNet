@@ -8,7 +8,7 @@ namespace BNN
     {
         static void Main(string[] args)
         {
-            /*double[][] data_in =
+            double[][] sample_in =
             {
                 new double[]{ 4.21850347, 2.23419161 },
                 new double[]{ 0.90779887, 0.45984362 },
@@ -112,7 +112,7 @@ namespace BNN
                 new double[] { 0.829832, 1.74202664 }
             };
 
-            double[][] data_ex =
+            double[][] sample_ex =
             {
                 new double[] { 1 }, new double[] { 1 }, new double[] { 0 }, new double[] { 0 }, new double[] { 1 },
                 new double[] { 0 }, new double[] { 0 }, new double[] { 1 }, new double[] { 0 }, new double[] { 1 },
@@ -139,28 +139,27 @@ namespace BNN
                 new double[] { 0 }, new double[] { 1 }
             };
 
+            Matrix data_in = new Matrix(sample_in);
+            Matrix data_ex = new Matrix(sample_ex);
 
             Network network = new Network(data_in, data_ex, 1);
 
-            network.train(1000);
+            network.train(100);
 
-            var test = new double[][] { new double[] { 2 }, new double[] { 1 } };
-
-            Predict(data_in, data_ex, network.Neurons[0].Weights, network.Neurons[0].Bias);*/
-
-            var test = new Matrix(4, 4, 10);
-            Console.WriteLine(test.ToString());
-            Console.WriteLine(test[0,1]);
+            Predict(data_in, data_ex, network.Neurons[0]);
         }
 
-        public static void Predict(Matrix X, Matrix data_ex, Matrix W, double b)
+        public static void Predict(Matrix X, Matrix data_ex, neuron neuron)
         {
-            var A = neuron.model(X, W, b);
-            Console.WriteLine(A.ToString());
-            
-            /*for(int i = 0; i < A.Length; i++)
-                if(Math.Abs(A[i][0] - data_ex[i][0]) > 0.01)
-                    Console.WriteLine($"Error at {i} : expected {data_ex[i][0]} but got {A[i][0]}");*/
+            var A = neuron.model(X, neuron.Weights, neuron.Bias);
+
+            for (int i = 0; i < A.rows; i++)
+            {
+                A[i][0] = A[i][0] <= 0.5 ? 0 : 1;
+                
+                if(Math.Abs(A[i][0] - data_ex[i][0]) > 0.0001)
+                    Console.WriteLine($"Error at {i}: expected {data_ex[i][0]} but got {A[i][0]}");
+            }
         }
     }
 }
