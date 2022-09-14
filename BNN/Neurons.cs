@@ -12,7 +12,7 @@ namespace BNN
 
         public neuron(Matrix X)
         {
-            this.Weights = new Matrix(X.cols, 1, 100);
+            this.Weights = new Matrix(X.cols, 1, -10, 10);
             this.Bias = Matrix.RandomDouble(-5, 5);
         }
 

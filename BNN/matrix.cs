@@ -5,12 +5,13 @@ namespace BNN
 {
     public class Matrix
     {
-        private double[][] arr;
+        public double[][] arr;
         
         #region INIT
-        public Matrix(int rows, int cols, int rnd_range = 0)
+
+        public Matrix(int rows, int cols, int rnd_min = 0, int rnd_max = 0)
         {
-            this.arr = init_matrix(rows, cols, rnd_range);
+            this.arr = init_matrix(rows, cols, rnd_min, rnd_max);
         }
 
         public Matrix(double[][] arr)
@@ -29,13 +30,13 @@ namespace BNN
             return res;
         }
         
-        private static double[][] init_matrix(int rows, int cols, int rnd_range = 0)
+        private static double[][] init_matrix(int rows, int cols, int rnd_min = 0, int rnd_max = 0)
         {
             var newMat = new double[rows][];
 
             for (var i = 0; i < rows; i++)
-                if (rnd_range != 0)
-                    newMat[i] = create_line(cols, rnd_range, -rnd_range);
+                if (rnd_min != rnd_max)
+                    newMat[i] = create_line(cols, rnd_max, rnd_min);
                 else
                     newMat[i] = new double[cols];
 
@@ -43,7 +44,7 @@ namespace BNN
         }
         #endregion
 
-        #region index handler
+        #region  Index Handler
 
         public double[] this[int i]
         {
